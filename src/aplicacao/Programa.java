@@ -22,6 +22,7 @@ public class Programa {
 		Date checkIn = sdf.parse(sc.next());
 		System.out.println("Check-Out data (DD/MM/YYYY");
 		Date checkOut = sdf.parse(sc.next());
+		
 		if (!checkOut.after(checkIn)) {
 			System.out.println("Erro na reserva: a data de checkout tem de ser posterior a data de checkIn");
 		} else {
@@ -34,16 +35,13 @@ public class Programa {
 			System.out.println("Check-Out data (DD/MM/YYYY");
 			checkOut = sdf.parse(sc.next());
 
-			Date dataAtual = new Date();
-			if (checkIn.before(dataAtual) || checkOut.before(dataAtual)) {
-				System.out.println("Erro na reserva: as datas têm de ser posteriores a data actual");
-				System.out.println("");
-			} else if (!checkOut.after(checkIn)) {
-				System.out.println("Erro na reserva: a data checkOut tem de se posterior a data de checkIn");
-			} else {
-				reserva.updateDate(checkIn, checkOut);
-				System.out.println("Reserva: " + reserva);
+			String erro = reserva.updateDate(checkIn, checkOut);
+
+			if (erro != null) {
+				System.out.println("Erro na reserva: " + erro);
 			}
+			System.out.println("Reserva: " + reserva);
+
 		}
 
 		sc.close();
