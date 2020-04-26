@@ -3,47 +3,46 @@ package aplicacao;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 import java.util.Scanner;
-
-import entidades.Reserva;
+import modelo.exception.DomainException;
+import modelo.entidades.Reserva;
 
 public class Programa {
 
-	public static void main(String[] args) throws ParseException {
+	public static void main(String[] args)  {
 
-		Locale.setDefault(Locale.US);
 		Scanner sc = new Scanner(System.in);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-		System.out.println("Insira o número do quarto ");
-		int numero = sc.nextInt();
-		System.out.println("Check-In data (DD/MM/YYYY");
-		Date checkIn = sdf.parse(sc.next());
-		System.out.println("Check-Out data (DD/MM/YYYY");
-		Date checkOut = sdf.parse(sc.next());
-		
-		if (!checkOut.after(checkIn)) {
-			System.out.println("Erro na reserva: a data de checkout tem de ser posterior a data de checkIn");
-		} else {
-
+		try {
+			System.out.println("Insira o número do quarto ");
+			int numero = sc.nextInt();
+			System.out.println("Check-In data (DD/MM/YYYY");
+			Date checkIn = sdf.parse(sc.next());
+			System.out.println("Check-Out data (DD/MM/YYYY");
+			Date checkOut = sdf.parse(sc.next());
+	
 			Reserva reserva = new Reserva(numero, checkIn, checkOut);
 			System.out.println("Reserva: " + reserva);
+			
 			System.out.println("");
 			System.out.println("Check-In data (DD/MM/YYYY");
 			checkIn = sdf.parse(sc.next());
 			System.out.println("Check-Out data (DD/MM/YYYY");
 			checkOut = sdf.parse(sc.next());
-
-			String erro = reserva.updateDate(checkIn, checkOut);
-
-			if (erro != null) {
-				System.out.println("Erro na reserva: " + erro);
-			}
+	
+			reserva.updateDate(checkIn, checkOut);
+	
 			System.out.println("Reserva: " + reserva);
-
 		}
-
+		catch (ParseException e) {
+			System.out.println("Inseriu uma data invalida ");
+			
+		}
+		catch (DomainException e){
+			
+			System.out.println("Erro na reserva "+e.getMessage());
+		}
 		sc.close();
 	}
 
